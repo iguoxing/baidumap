@@ -6,7 +6,8 @@
     @draw="draw">
     <div class="dot-rank">
       <img src="https://iguoxing.oss-cn-beijing.aliyuncs.com/img/baidu/chang.gif" :style="{width: getWidth(val) + '%'}"/>
-      <span class="rank-color" v-if="num<5">{{num+1}}</span>
+      <!-- <img src="https://iguoxing.oss-cn-beijing.aliyuncs.com/img/baidu/1001.gif" :style="{width: getWidth(val) + '%'}"/> -->
+      <span class="rank-color" v-if="val<6">{{val}}</span>
     </div>
   </bm-overlay>
 </template>

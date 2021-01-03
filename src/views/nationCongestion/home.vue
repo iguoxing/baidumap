@@ -58,8 +58,8 @@
             <el-col :span="6">
               <span>拥堵里程</span>
             </el-col>
-            <el-col :span="6">
-              <span>平均速度</span>
+            <el-col :span="4">
+              <span style="margin-left:15px">平均速度</span>
             </el-col>
           </el-col>
           <el-col v-for="(items, index) in trafficTop" :key="index + 'wewewe'" v-show="index < 10"
@@ -128,23 +128,12 @@
             </div>
           </el-col>
           <el-col style="height: 73%;">&nbsp;</el-col>
-          <!-- <el-col style="text-align: center;">
-            <el-col style="width: 35%;">&nbsp;</el-col>
-            <el-col style="width: 10%;height: 24px;border: 1px solid #1CCCF3;text-align: center;margin: 0 auto;">
-              <span style="width: 48px;height: 12px;font-size: 12px;font-weight: 500;color: #1CD0F6;line-height: 18px;">全部道路</span>
-            </el-col>
-            <el-col style="width: 10%;height: 24px;border: 1px solid #1CCCF3;text-align: center;opacity: 0.4;margin: 0 auto;">
-              <span style="width: 48px;height: 12px;font-size: 12px;font-weight: 500;color: #FFF;line-height: 18px;opacity: 0.6;">高速/快速路</span>
-            </el-col>
-            <el-col style="width: 10%;height: 24px;border: 1px solid #1CCCF3;text-align: center;opacity: 0.4;margin: 0 auto;">
-              <span style="width: 48px;height: 12px;font-size: 12px;font-weight: 500;color: #FFF;line-height: 18px;opacity: 0.6;">普通道路</span>
-            </el-col>
-          </el-col> -->
-          <el-col style="border: 1px solid rgba(255,255,255,.6);display: none;">
-            &nbsp;
-          </el-col>
+          <el-col>&nbsp;</el-col>
           <el-col>
-            <el-col :span="6" style="height: 45px;line-height: 45px;"></el-col>
+            <el-col :span="6" style="height: 45px;line-height: 45px;">
+                <span style="width: 28px;height: 13px;font-size: 14px;font-family: PingFang SC;font-weight: 400;color: #18C7EE;line-height: 18px;"
+                @click="selectCity = true">选择城市</span>
+            </el-col>
             <el-col :span="16" style="height: 45px;line-height: 45px;">
               <el-col :span="6">
                 <el-col class="dot-icon chang"></el-col>
@@ -215,6 +204,37 @@
         </el-col>
       </el-row>
     </div>
+    <el-dialog title="城市排行" :visible.sync="selectCity">
+      <div style="text-align: center;font-size: 1.35rem;line-height: 4rem;height: 47rem;margin-top: -3.5rem;">
+        <el-col :span="3">&nbsp;</el-col>
+        <el-col :span="18" style="height: 100%;">
+          <el-col>
+            <el-col :span="12">
+              <span>字母</span>
+            </el-col>
+            <el-col :span="12">
+              <span>城市</span>
+            </el-col>
+          </el-col>
+          <el-col v-for="(items,index) in city.cityList" :key="index" @click.native="ontoCityByListClick(items.ci_code)" class="">
+            <el-col :span="12">
+              <span>{{items.first}}</span>
+            </el-col>
+            <el-col :span="12">
+              <span>{{items.ci_name}}</span>
+            </el-col>
+          </el-col>
+        </el-col>
+        <el-col style="text-align: center;margin-top: -2.5rem;">
+          <el-col :span="12">
+            <el-button style="background-color: #1E1E1E;font-size: 1.35rem;border: none;color: #1BCFF6;" @click="ontoLast(city.cityIndex)" :disabled="city.cityLastType">上一页</el-button>
+          </el-col>
+          <el-col :span="12">
+            <el-button style="background-color: #1E1E1E;font-size: 1.35rem;border: none;color: #1BCFF6;" @click="ontoNext(city.cityIndex)" :disabled="city.cityNextType">下一页</el-button>
+          </el-col>
+        </el-col>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -238,6 +258,515 @@ export default {
   },
   data () {
     return {
+      allCities: [
+        {
+          'first': 'B',
+          'ci_name': '保定',
+          'ci_code': 307
+        },
+        {
+          'first': 'B',
+          'ci_name': '北京',
+          'ci_code': 131
+        },
+        {
+          'first': 'C',
+          'ci_name': '潮州',
+          'ci_code': 201
+        },
+        {
+          'first': 'C',
+          'ci_name': '沧州',
+          'ci_code': 149
+        },
+        {
+          'first': 'C',
+          'ci_name': '成都',
+          'ci_code': 75
+        },
+        {
+          'first': 'C',
+          'ci_name': '常州',
+          'ci_code': 348
+        },
+        {
+          'first': 'C',
+          'ci_name': '长沙',
+          'ci_code': 158
+        },
+        {
+          'first': 'C',
+          'ci_name': '重庆',
+          'ci_code': 132
+        },
+        {
+          'first': 'C',
+          'ci_name': '长春',
+          'ci_code': 53
+        },
+        {
+          'first': 'D',
+          'ci_name': '大同',
+          'ci_code': 355
+        },
+        {
+          'first': 'D',
+          'ci_name': '大理',
+          'ci_code': 111
+        },
+        {
+          'first': 'D',
+          'ci_name': '德州',
+          'ci_code': 372
+        },
+        {
+          'first': 'D',
+          'ci_name': '东莞',
+          'ci_code': 119
+        },
+        {
+          'first': 'D',
+          'ci_name': '大连',
+          'ci_code': 167
+        },
+        {
+          'first': 'F',
+          'ci_name': '福州',
+          'ci_code': 300
+        },
+        {
+          'first': 'F',
+          'ci_name': '佛山',
+          'ci_code': 138
+        },
+        {
+          'first': 'G',
+          'ci_name': '广州',
+          'ci_code': 257
+        },
+        {
+          'first': 'G',
+          'ci_name': '贵阳',
+          'ci_code': 146
+        },
+        {
+          'first': 'G',
+          'ci_name': '桂林',
+          'ci_code': 142
+        },
+        {
+          'first': 'G',
+          'ci_name': '赣州',
+          'ci_code': 365
+        },
+        {
+          'first': 'H',
+          'ci_name': '湖州',
+          'ci_code': 294
+        },
+        {
+          'first': 'H',
+          'ci_name': '呼和浩特',
+          'ci_code': 321
+        },
+        {
+          'first': 'H',
+          'ci_name': '邯郸',
+          'ci_code': 151
+        },
+        {
+          'first': 'H',
+          'ci_name': '衡阳',
+          'ci_code': 159
+        },
+        {
+          'first': 'H',
+          'ci_name': '哈尔滨',
+          'ci_code': 48
+        },
+        {
+          'first': 'H',
+          'ci_name': '海口',
+          'ci_code': 125
+        },
+        {
+          'first': 'H',
+          'ci_name': '淮安',
+          'ci_code': 162
+        },
+        {
+          'first': 'H',
+          'ci_name': '合肥',
+          'ci_code': 127
+        },
+        {
+          'first': 'H',
+          'ci_name': '惠州',
+          'ci_code': 301
+        },
+        {
+          'first': 'H',
+          'ci_name': '衡水',
+          'ci_code': 208
+        },
+        {
+          'first': 'H',
+          'ci_name': '杭州',
+          'ci_code': 179
+        },
+        {
+          'first': 'J',
+          'ci_name': '济宁',
+          'ci_code': 286
+        },
+        {
+          'first': 'J',
+          'ci_name': '金华',
+          'ci_code': 333
+        },
+        {
+          'first': 'J',
+          'ci_name': '江门',
+          'ci_code': 302
+        },
+        {
+          'first': 'J',
+          'ci_name': '济南',
+          'ci_code': 288
+        },
+        {
+          'first': 'J',
+          'ci_name': '嘉兴',
+          'ci_code': 334
+        },
+        {
+          'first': 'K',
+          'ci_name': '昆明',
+          'ci_code': 104
+        },
+        {
+          'first': 'L',
+          'ci_name': '兰州',
+          'ci_code': 36
+        },
+        {
+          'first': 'L',
+          'ci_name': '乐山',
+          'ci_code': 79
+        },
+        {
+          'first': 'L',
+          'ci_name': '连云港',
+          'ci_code': 347
+        },
+        {
+          'first': 'L',
+          'ci_name': '拉萨',
+          'ci_code': 100
+        },
+        {
+          'first': 'L',
+          'ci_name': '柳州',
+          'ci_code': 305
+        },
+        {
+          'first': 'L',
+          'ci_name': '廊坊',
+          'ci_code': 191
+        },
+        {
+          'first': 'L',
+          'ci_name': '洛阳',
+          'ci_code': 153
+        },
+        {
+          'first': 'L',
+          'ci_name': '临沂',
+          'ci_code': 234
+        },
+        {
+          'first': 'M',
+          'ci_name': '茂名',
+          'ci_code': 139
+        },
+        {
+          'first': 'M',
+          'ci_name': '绵阳',
+          'ci_code': 240
+        },
+        {
+          'first': 'N',
+          'ci_name': '南充',
+          'ci_code': 291
+        },
+        {
+          'first': 'N',
+          'ci_name': '宁波',
+          'ci_code': 180
+        },
+        {
+          'first': 'N',
+          'ci_name': '南宁',
+          'ci_code': 261
+        },
+        {
+          'first': 'N',
+          'ci_name': '南昌',
+          'ci_code': 163
+        },
+        {
+          'first': 'N',
+          'ci_name': '南阳',
+          'ci_code': 309
+        },
+        {
+          'first': 'N',
+          'ci_name': '南通',
+          'ci_code': 161
+        },
+        {
+          'first': 'N',
+          'ci_name': '南京',
+          'ci_code': 315
+        },
+        {
+          'first': 'Q',
+          'ci_name': '泉州',
+          'ci_code': 134
+        },
+        {
+          'first': 'Q',
+          'ci_name': '秦皇岛',
+          'ci_code': 148
+        },
+        {
+          'first': 'Q',
+          'ci_name': '青岛',
+          'ci_code': 236
+        },
+        {
+          'first': 'Q',
+          'ci_name': '清远',
+          'ci_code': 197
+        },
+        {
+          'first': 'S',
+          'ci_name': '三亚',
+          'ci_code': 121
+        },
+        {
+          'first': 'S',
+          'ci_name': '深圳',
+          'ci_code': 340
+        },
+        {
+          'first': 'S',
+          'ci_name': '汕头',
+          'ci_code': 303
+        },
+        {
+          'first': 'S',
+          'ci_name': '厦门',
+          'ci_code': 194
+        },
+        {
+          'first': 'S',
+          'ci_name': '韶关',
+          'ci_code': 137
+        },
+        {
+          'first': 'S',
+          'ci_name': '石家庄',
+          'ci_code': 150
+        },
+        {
+          'first': 'S',
+          'ci_name': '上海',
+          'ci_code': 289
+        },
+        {
+          'first': 'S',
+          'ci_name': '沈阳',
+          'ci_code': 58
+        },
+        {
+          'first': 'S',
+          'ci_name': '苏州',
+          'ci_code': 224
+        },
+        {
+          'first': 'S',
+          'ci_name': '绍兴',
+          'ci_code': 293
+        },
+        {
+          'first': 'T',
+          'ci_name': '唐山',
+          'ci_code': 265
+        },
+        {
+          'first': 'T',
+          'ci_name': '太原',
+          'ci_code': 176
+        },
+        {
+          'first': 'T',
+          'ci_name': '泰安',
+          'ci_code': 325
+        },
+        {
+          'first': 'T',
+          'ci_name': '天津',
+          'ci_code': 332
+        },
+        {
+          'first': 'T',
+          'ci_name': '台州',
+          'ci_code': 244
+        },
+        {
+          'first': 'W',
+          'ci_name': '潍坊',
+          'ci_code': 287
+        },
+        {
+          'first': 'W',
+          'ci_name': '武汉',
+          'ci_code': 218
+        },
+        {
+          'first': 'W',
+          'ci_name': '乌鲁木齐',
+          'ci_code': 92
+        },
+        {
+          'first': 'W',
+          'ci_name': '温州',
+          'ci_code': 178
+        },
+        {
+          'first': 'W',
+          'ci_name': '无锡',
+          'ci_code': 317
+        },
+        {
+          'first': 'X',
+          'ci_name': '邢台',
+          'ci_code': 266
+        },
+        {
+          'first': 'X',
+          'ci_name': '西宁',
+          'ci_code': 66
+        },
+        {
+          'first': 'X',
+          'ci_name': '西安',
+          'ci_code': 233
+        },
+        {
+          'first': 'X',
+          'ci_name': '徐州',
+          'ci_code': 316
+        },
+        {
+          'first': 'X',
+          'ci_name': '新乡',
+          'ci_code': 152
+        },
+        {
+          'first': 'X',
+          'ci_name': '咸阳',
+          'ci_code': 323
+        },
+        {
+          'first': 'Y',
+          'ci_name': '云浮',
+          'ci_code': 258
+        },
+        {
+          'first': 'Y',
+          'ci_name': '银川',
+          'ci_code': 360
+        },
+        {
+          'first': 'Y',
+          'ci_name': '宜宾',
+          'ci_code': 186
+        },
+        {
+          'first': 'Y',
+          'ci_name': '扬州',
+          'ci_code': 346
+        },
+        {
+          'first': 'Y',
+          'ci_name': '阳泉',
+          'ci_code': 357
+        },
+        {
+          'first': 'Y',
+          'ci_name': '烟台',
+          'ci_code': 326
+        },
+        {
+          'first': 'Y',
+          'ci_name': '盐城',
+          'ci_code': 223
+        },
+        {
+          'first': 'Z',
+          'ci_name': '郑州',
+          'ci_code': 268
+        },
+        {
+          'first': 'Z',
+          'ci_name': '张家口',
+          'ci_code': 264
+        },
+        {
+          'first': 'Z',
+          'ci_name': '湛江',
+          'ci_code': 198
+        },
+        {
+          'first': 'Z',
+          'ci_name': '淄博',
+          'ci_code': 354
+        },
+        {
+          'first': 'Z',
+          'ci_name': '漳州',
+          'ci_code': 255
+        },
+        {
+          'first': 'Z',
+          'ci_name': '镇江',
+          'ci_code': 160
+        },
+        {
+          'first': 'Z',
+          'ci_name': '肇庆',
+          'ci_code': 338
+        },
+        {
+          'first': 'Z',
+          'ci_name': '中山',
+          'ci_code': 187
+        },
+        {
+          'first': 'Z',
+          'ci_name': '珠海',
+          'ci_code': 140
+        }
+      ],
+      city: {
+        cityIndex: 1,
+        cityList: []
+      },
+      // 城市切换
+      // selectCity: true,
+      selectCity: false,
       heatMapDataMax: 0,
       heatMapData1: [],
       heatMapDataChang: [],
@@ -687,8 +1216,7 @@ export default {
             }
           }
         ]
-      },
-      selectCity: false
+      }
     }
   },
   mounted () {
@@ -700,6 +1228,22 @@ export default {
     }, 300000)
   },
   methods: {
+    getCites (i) {
+      this.city.cityList = this.allCities.slice(10 * (i - 1), 10 * i)
+    },
+    ontoCityByListClick (val) {
+      console.info('--choose city start--')
+      console.info(val)
+      this.$router.push({
+        path: '/congestionIndex',
+        name: 'CongestionIndex',
+        query: {
+          code: val,
+          zoom: 12
+        }
+      })
+      console.info('--choose city endy--')
+    },
     // 修改是否显示实时拥堵或者拥堵预测
     updateMapType: function () {
       this.mapSelectType = !this.mapSelectType
@@ -741,7 +1285,7 @@ export default {
       // isThis.center.lng = 106.404
       // isThis.center.lat = 35.915
       var projection2 = map.getMapType().getProjection()
-      var LngLat = projection2.pointToLngLat(new BMap.Pixel(11559238.56, 4725347.47))
+      var LngLat = projection2.pointToLngLat(new BMap.Pixel(11559238.56, 4525347.47))
       isThis.center.lng = LngLat.lng
       isThis.center.lat = LngLat.lat
       isThis.zoom = 5
@@ -835,10 +1379,47 @@ export default {
       }).catch(err => {
         _this.$message.error('数据添加失败了' + err)
       })
+      _this.getCites(_this.city.cityIndex)
+    },
+    // 显示上一页的菜单页面
+    ontoLast: function (i) {
+      let _this = this
+      if (i > 1) {
+        i -= 1
+        _this.getCites(i)
+      }
+      _this.city.cityIndex = i
+    },
+    // 显示下一页的菜单
+    ontoNext: function (i) {
+      let _this = this
+      if (i < 10) {
+        i += 1
+        _this.getCites(i)
+      }
+      _this.city.cityIndex = i
     }
   }
 }
 </script>
+
+<style>
+.el-dialog__titleP {color: #fff;}
+.el-dialog__header {
+    background-color: #031127ff !important;
+    color: #1BCFF6 !important;
+  }
+
+  .el-dialog__body {
+    background-color: #031127ff !important;
+    color: #1BCFF6 !important;
+  }
+
+  .el-dialog__footer {
+    background-color: #031127ff !important;
+    color: #1BCFF6 !important;
+  }
+</style>
 
 <style scoped>
   .dot-icon{

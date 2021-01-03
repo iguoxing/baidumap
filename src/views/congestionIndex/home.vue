@@ -241,10 +241,7 @@
               <span style="width: 48px;height: 12px;font-size: 12px;font-weight: 500;color: #FFF;line-height: 18px;opacity: 0.6;">普通道路</span>
             </el-col>
           </el-col>
-          <el-col style="border: 1px solid rgba(255,255,255,.0);">
-            &nbsp;
-          </el-col>
-          <el-col>
+          <el-col style="margin-top:-100px;">
             <el-col :span="14" style="height: 45px;line-height: 45px;">
               <i class="el-icon-location-outline"></i>
               <span style="font-size: 14px;font-weight: 400;color: #FFFFFF;line-height: 18px;">当前城市：{{city.name}}</span>
@@ -441,7 +438,7 @@
               <span>城市</span>
             </el-col>
           </el-col>
-          <el-col v-for="(items,index) in city.cityList" :key="index" @click.native="ontoCityByListClick(items.items.ci_code)" class="">
+          <el-col v-for="(items,index) in city.cityList" :key="index" @click.native="ontoCityByListClick(items.ci_code)" class="">
             <el-col :span="12">
               <span>{{items.first}}</span>
             </el-col>
@@ -3309,25 +3306,27 @@ export default {
       }
     }
   },
+  created () {
+    this.getParams()
+  },
   mounted () {
     this.city.code = this.$route.query.code
     this.zoom = this.$route.query.zoom
     this.ontoCityByListClick(this.city.code)
-    // let _this = this
-    // 初始化获取页面详细信息
-    // this.initCityVal(this.city.code)
-    // 初始化菜单页面
-    // selectByPage(0, 10).then(request => {
-    //   _this.city.cityLastType = false
-    //   _this.city.cityList = request.data
-    // }).catch(err => {
-    //   _this.$message.error('数据添加失败了' + err)
-    //   _this.city.cityLastType = false
-    // })
+  },
+  watch: {
+    // 监测路由变化,只要变化了就调用获取路由参数方法将数据存储本组件即可
+    $route: 'getParams'
   },
   methods: {
     getCites (i) {
       this.city.cityList = this.allCities.slice(10 * (i - 1), 10 * i)
+    },
+    getParams () {
+      // 取到路由带过来的参数
+      this.city.code = this.$route.query.code
+      this.zoom = this.$route.query.zoom
+      this.ontoCityByListClick(this.$route.query.code)
     },
     // 修改是否显示实时拥堵或者拥堵预测
     updateMapType: function () {

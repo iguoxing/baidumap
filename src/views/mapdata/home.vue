@@ -871,7 +871,7 @@ export default {
     handler ({BMap, map}) {
       let isThis = this
       isThis.center.lng = 106.404
-      isThis.center.lat = 43.515
+      isThis.center.lat = 41.515
       isThis.zoom = 5
     },
     draw ({el, BMap, map}) {

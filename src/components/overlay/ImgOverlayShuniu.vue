@@ -5,8 +5,7 @@
     pane="labelPane"
     @draw="draw">
     <div class="dot-rank">
-      <!-- <span v-if="num<3" class="rank-color">{{num+1}}</span> -->
-      <el-tooltip class="item" value="true" effect="dark" :content="name" placement="top" manual="true" hide-after="0">
+      <el-tooltip class="item" value="true" effect="light" :content="name" :placement="className" manual="true" hide-after="0">
         <img src="https://iguoxing.oss-cn-beijing.aliyuncs.com/img/baidu/shuniu.png" :style="{width: 30 + '%'}"/>
       </el-tooltip>
     </div>
@@ -15,7 +14,7 @@
 
 <script>
 export default {
-  props: ['position', 'num', 'name'],
+  props: ['position', 'num', 'name', 'className'],
   watch: {
     position: {
       handler () {

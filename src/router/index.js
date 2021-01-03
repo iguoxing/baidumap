@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Congestion from '../views/congestion/home.vue'
+import CongestionIndex from '../views/congestionIndex/home.vue'
 import HeatMap from '../views/heatmap/home.vue'
 import Mapdata from '../views/mapdata/home.vue'
 import NationCongestion from '../views/nationCongestion/home.vue'
@@ -20,6 +21,11 @@ export default new Router({
       component: Congestion
     },
     {
+      path: '/congestionIndex',
+      name: 'CongestionIndex',
+      component: CongestionIndex
+    },
+    {
       path: '/heatmap',
       name: 'HeatMap',
       component: HeatMap
@@ -32,7 +38,8 @@ export default new Router({
     {
       path: '/nationCongestion',
       name: 'NationCongestion',
-      component: NationCongestion
+      component: NationCongestion,
+      meta: { keepAlive: true }
     }
   ]
 })

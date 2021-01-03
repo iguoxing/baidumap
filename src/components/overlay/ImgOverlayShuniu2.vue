@@ -4,20 +4,15 @@
     :class="{sample: true}"
     pane="labelPane"
     @draw="draw">
-    <div class="dot-rank" v-if="num<4">
-      <el-tooltip class="item" value="true" effect="light" :content="name" :placement="num%2 == 0?'top-start':'bottom-end'" manual="true" hide-after="0">
-        <img src="https://iguoxing.oss-cn-beijing.aliyuncs.com/img/baidu/jingqu.png" :style="{width: 30 + '%'}"/>
-      </el-tooltip>
-    </div>
-    <div class="dot-rank" v-if="num>3" >
-      <img src="https://iguoxing.oss-cn-beijing.aliyuncs.com/img/baidu/jingqu.png" :style="{width: 25 + '%'}"/>
+    <div class="dot-rank">
+      <img src="https://iguoxing.oss-cn-beijing.aliyuncs.com/img/baidu/shuniu.png" :style="{width: 30 + '%'}"/>
     </div>
   </bm-overlay>
 </template>
 
 <script>
 export default {
-  props: ['position', 'num', 'name'],
+  props: ['position', 'num', 'name', 'className'],
   watch: {
     position: {
       handler () {

@@ -5,16 +5,23 @@
       <!-- 百度地图拥堵路况叠加 <bm-traffic :predictDate="{weekday: 7, hour: 12}"></bm-traffic> -->
       <!-- <bml-heatmap :data="heatMapData" :max="heatMapDataMax" :radius="13" :gradient="{0:'rgb(34, 65, 255)',.5:'rgb(255, 198, 0)',1:'rgb(255, 30, 30)'}"></bml-heatmap> -->
       <!-- <bm-marker :position="markerPoint" :dragging="true" animation="BMAP_ANIMATION_BOUNCE" :icon="{url: 'http://developer.baidu.com/map/jsdemo/img/fox.gif', size: {width: 300, height: 157}}"></bm-marker> -->
-      <div v-if="mapSelectType">
+      <div v-if="mapSelectType==1">
         <my-overlay-shuniu v-for="(item, index) in heatMapDataShuniu" :key="index"
           :position="{lng: item.lng, lat: item.lat}"
           :num="index+1"
           :name="item.name"
+          :className="item.className"
           @mouseover.native="active = true"
           @mouseleave.native="active = false">
         </my-overlay-shuniu>
+        <my-overlay-shuniu-2 v-for="(item, index) in heatMapDataShuniu2" :key="index"
+          :position="{lng: item.lng, lat: item.lat}"
+          :num="index+1"
+          @mouseover.native="active = true"
+          @mouseleave.native="active = false">
+        </my-overlay-shuniu-2>
       </div>
-      <div v-if="!mapSelectType">
+      <div v-if="mapSelectType==2">
         <my-overlay-jingqu v-for="(item, index) in heatMapDataJingqu" :key="index"
           :position="{lng: item.lng, lat: item.lat}"
           :num="index+1"
@@ -114,10 +121,10 @@
           <el-col style="height: 73%;">
             <!-- 顶部切换选择 -->
             <el-col style="display: flex;justify-content: center;">
-              <el-col :class="[mapSelectType  == true ? 'titleBgSelect1' : 'titleBgSelect2']" @click.native="updateMapType()">
+              <el-col :class="[mapSelectType  == 1 ? 'titleBgSelect1' : 'titleBgSelect2']" @click.native="updateMapType(1)">
                 <span class="titleFontCss2">交通枢纽</span>
               </el-col>
-              <el-col :class="[mapSelectType == true ? 'titleBgSelect2' : 'titleBgSelect1']" @click.native="updateMapType()">
+              <el-col :class="[mapSelectType == 1 ? 'titleBgSelect2' : 'titleBgSelect1']" @click.native="updateMapType(2)">
                 <span class="titleFontCss1">热门景点</span>
               </el-col>
             </el-col>
@@ -190,16 +197,19 @@ import { selectJingqu, selectJT } from '../../api/heatmap.js'
 import { getWeekDay } from '../../router/utils'
 import MyOverlayJingqu from '../../components/overlay/ImgOverlayJingqu.vue'
 import MyOverlayShuniu from '../../components/overlay/ImgOverlayShuniu.vue'
+import MyOverlayShuniu2 from '../../components/overlay/ImgOverlayShuniu2.vue'
 export default {
   name: 'Congestion',
   components: {
     BmlHeatmap,
     MyOverlayJingqu,
-    MyOverlayShuniu
+    MyOverlayShuniu,
+    MyOverlayShuniu2
   },
   data () {
     return {
       heatMapDataShuniu: [],
+      heatMapDataShuniu2: [],
       heatMapDataJingqu: [],
       markerPoint: {
         lng: 106.418261,
@@ -440,7 +450,7 @@ export default {
         }
       ],
       // 选择 显示实时拥堵或者拥堵预测
-      mapSelectType: true,
+      mapSelectType: 1,
       // 经纬度
       center: {
         lng: 0,
@@ -717,8 +727,8 @@ export default {
   },
   methods: {
     // 修改是否显示实时拥堵或者拥堵预测
-    updateMapType: function () {
-      this.mapSelectType = !this.mapSelectType
+    updateMapType: function (val) {
+      this.mapSelectType = val
     },
     // 百度地图被创建后的回调函数
     handler: function ({BMap, map}) {
@@ -788,11 +798,22 @@ export default {
           let location1 = {
             'lng': parseFloat(location[0]) + 2.5,
             'lat': location[1],
-            'count': requestData.hot_value,
-            'name': requestData.display_name
+            'count': requestData.hot_value
           }
           if (i < 10) {
-            _this.heatMapDataShuniu.push(location1)
+            if (i < 3) {
+              location1.name = requestData.display_name
+              if (i % 3 === 0) {
+                location1.className = 'bottom-end'
+              } else if (i % 3 === 1) {
+                location1.className = 'top-start'
+              } else if (i % 3 === 2) {
+                location1.className = 'right'
+              }
+              _this.heatMapDataShuniu.push(location1)
+            } else {
+              _this.heatMapDataShuniu2.push(location1)
+            }
           }
           // _this.heatMapData.push(location1)
           // if (_this.heatMapDataMax < requestData.hot_value) _this.heatMapDataMax = requestData.hot_value
