@@ -187,7 +187,7 @@
               </div>
             </el-col>
             <el-col :span="1">&nbsp;</el-col>
-            <el-col :span="20" style="text-align: left;margin: 0;padding: 0;height: 65px;" class="gradient">
+            <el-col :span="20" style="text-align: left;margin: 0;padding: 0;height: 65px;padding-top:4px;" class="gradient">
               <el-col :span="10" class="city-item">
                 <span class="city-word">{{items.s_name}}</span>
               </el-col>
@@ -1232,8 +1232,6 @@ export default {
       this.city.cityList = this.allCities.slice(10 * (i - 1), 10 * i)
     },
     ontoCityByListClick (val) {
-      console.info('--choose city start--')
-      console.info(val)
       this.$router.push({
         path: '/congestionIndex',
         name: 'CongestionIndex',
@@ -1242,7 +1240,6 @@ export default {
           zoom: 12
         }
       })
-      console.info('--choose city endy--')
     },
     // 修改是否显示实时拥堵或者拥堵预测
     updateMapType: function () {
@@ -1481,11 +1478,11 @@ export default {
     line-height: 55px;
   }
   .congestionTitleBg {
-    background-image: url(../../../static/img/biaoti_bg@2x.png);
+    background-image: url(../../../static/img/biaoti_bg.png);
     background-position: 100% 100%;
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    height: 180px;
+    height: 120px;
     width: 531px;
     margin-top: 20px;
   }
@@ -1493,7 +1490,7 @@ export default {
     font-size: 30px;
     font-weight: 500;
     color: #FEFEFE;
-    line-height: 72px;
+    line-height: 120px;
   }
   .congestionSubheadBg {
     margin: -72px auto 0;
